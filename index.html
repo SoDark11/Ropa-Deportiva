@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Catálogo de Prendas</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+*{box-sizing:border-box}
+html, body{
+    margin:0;
+    padding:0;
+    font-family:'Montserrat', sans-serif;
+    scroll-behavior:smooth;
+    background: #0f0f0f; /* Negro suave */
+    color:#CFCFCF; /* Texto normal gris */
+    overflow-x: hidden;
+}
+
+/* Parallax en fondo */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+    z-index: -1;
+    transform: translateY(0);
+    transition: transform 0.1s linear;
+}
+body {
+    animation: parallax 10s ease-in-out infinite alternate;
+}
+@keyframes parallax {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+/* HEADER */
+header{
+    background:#1a1a1a; /* Gris profundo */
+    color:#F2F2F2; /* Título gris claro */
+    text-align:center;
+    padding:60px 20px; /* Más espaciado */
+    border-bottom: 1px solid #333;
+    animation: fadeIn 1s ease-in;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+header h1{letter-spacing:2px; font-size: 2.5em; font-weight: 700; margin: 0;}
+
+/* CARRITO */
+#carrito{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#7A8F7A; /* Color acento */
+    color:#fff;
+    padding:12px 20px;
+    border-radius:25px;
+    cursor:pointer;
+    font-weight:600;
+    z-index:20;
+    border: none;
+    transition: transform 0.3s, background 0.3s;
+    animation: bounceIn 0.5s ease-out;
+}
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+#carrito:hover{transform: scale(1.1); background: #8FAF8F;}
+
+/* SECCIONES */
+section{
+    padding:80px 20px; /* Más espaciado para lujo */
+    max-width:1200px;
+    margin:auto;
+}
+
+section h2{
+    text-align:center;
+    font-size: 2 em;
+    font-weight: 600;
+    color: #F2F2F2; /* Título gris claro */
+    margin-bottom: 50px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
+    animation: slideInUp 1s ease-out;
+}
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* PRODUCTOS */
+.productos{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:50px; /* Más espaciado */
+}
+
+.producto{
+    background:#1f1f1f; /* Gris más claro para tarjetas */
+    border-radius:15px; /* Bordes más redondeados */
+    box-shadow:0 4px 15px rgba(0,0,0,0.3);
+    text-align:center;
+    overflow:hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #333;
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.producto:nth-child(1) { animation-delay: 0.1s; }
+.producto:nth-child(2) { animation-delay: 0.2s; }
+.producto:nth-child(3) { animation-delay: 0.3s; }
+.producto:nth-child(4) { animation-delay: 0.4s; }
+.producto:nth-child(5) { animation-delay: 0.5s; }
+.producto:nth-child(6) { animation-delay: 0.6s; }
+.producto:hover{
+    transform: translateY(-6px); /* Subida elegante */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+
+.producto img{
+    width:100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0; /* Bordes redondeados arriba */
+    transition: filter 0.3s;
+}
+.producto:hover img{filter: brightness(1.1);}
+
+.producto h3{
+    margin:20px 0;
+    color: #F2F2F2; /* Título gris claro */
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.producto p{
+    font-weight:700;
+    color: #7A8F7A; /* Color acento en precio */
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.producto button{
+    background:#333; /* Gris oscuro */
+    color:#CFCFCF; /* Texto gris */
+    border:none;
+    padding:14px 26px;
+    border-radius:25px;
+    margin-bottom:25px;
+    cursor:pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background 0.3s, transform 0.3s;
+}
+.producto button:hover{
+    background:#7A8F7A; /* Color acento en hover */
+    color:#fff;
+    animation: bounce 0.6s ease-in-out;
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* FOOTER */
+footer{
+    background:#1a1a1a; /* Gris profundo */
+    color:#9E9E9E; /* Texto secundario gris */
+    text-align:center;
+    padding:40px; /* Más espaciado */
+    border-top: 1px solid #333;
+    animation: fadeIn 1s ease-in;
+}
+footer p{margin: 0; font-weight: 500;}
+
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.8);
+    align-items:center;
+    justify-content:center;
+    z-index:30;
+    animation: fadeIn 0.3s ease-out;
+}
+.modal-content{
+    background:#FAFAFA; /* Blanco cálido */
+    padding:50px; /* Más espaciado */
+    border-radius:20px; /* Bordes más redondeados */
+    width:90%;
+    max-width:600px;
+    text-align:center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2); /* Sombra suave */
+    animation: zoomIn 0.3s ease-out;
+}
+@keyframes zoomIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+.modal-content ul {list-style: none; padding: 0;}
+.modal-content li {
+    margin: 20px 0; /* Más espaciado */
+    display: flex;
+    justify-content: space-between;
+    color: #9E9E9E; /* Texto secundario gris */
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+.remove-btn {
+    background: #333;
+    color: #CFCFCF;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+.remove-btn:hover {background: #7A8F7A;}
+#total-display {font-weight: 700; color: #7A8F7A; font-size: 1.4em; margin: 25px 0;} /* Total destacado con acento */
+#email {
+    width: 100%;
+    padding: 14px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #f9f9f9;
+    color: #000;
+}
+#proceder {
+    background: #7A8F7A; /* Color acento */
+    color: #fff;
+    border: none;
+    padding: 16px 30px; /* Más grande */
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 25px;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+#proceder:hover {background: #8FAF8F;}
+#qr-container {
+    margin-top: 40px;
+    display: none;
+    background: #f0f0f0; /* Caja gris clara */
+    padding: 20px;
+    border-radius: 10px;
+    animation: slideInDown 0.5s ease-out;
+}
+@keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+#qr-container p {color: #9E9E9E; font-weight: 600; font-size: 0.9em;} /* Texto discreto */
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .productos {grid-template-columns: 1fr;}
+    header h1 {font-size: 2em;}
+    section h2 {font-size: 1.5em;}
+    .modal-content {padding: 30px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Catálogo</h1>
+</header>
+
+<div id="carrito" onclick="mostrarCarrito()">🛒 Carrito (<span id="count">0</span>)</div>
+
+<section id="catalogo">
+<h2>Prendas Urbanas</h2>
+
+<div class="productos">
+    <div class="producto">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" alt="Camisa blanca">
+        <h3>Camisa blanca</h3>
+        <p>$25.00</p>
+        <button onclick="agregarProducto('Camisa blanca', 25.00)">Agregar al carrito</button>
+    </div>
+
+    <div class="producto">
+        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7" alt="Sudadera negra">
+        <h3>Sudadera negra</h3>
+        <p>$30.00</p>
+        <button onclick="agregarProducto('Sudadera negra', 30.00)">Agregar al carrito</button>
+    </div>
+
+    <div class="producto">
+        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d" alt="Pantalón jean">
+        <h3>Pantalón jean</h3>
+        <p>$35.00</p>
+        <button onclick="agregarProducto('Pantalón jean', 35.00)">Agregar al carrito</button>
+    </div>
+
+    <div class="producto">
+        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5" alt="Chaqueta cuero">
+        <h3>Chaqueta cuero</h3>
+        <p>$50.00</p>
+        <button onclick="agregarProducto('Chaqueta cuero', 50.00)">Agregar al carrito</button>
+    </div>
+
+    <div class="producto">
+        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772" alt="Zapatos deportivos">
+        <h3>Zapatos deportivos</h3>
+        <p>$40.00</p>
+        <button onclick="agregarProducto('Zapatos deportivos', 40.00)">Agregar al carrito</button>
+    </div>
+
+    <div class="producto">
+        <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b" alt="Gorra urbana">
+        <h3>Gorra urbana</h3>
+        <p>$15.00</p>
+        <button onclick="agregarProducto('Gorra urbana', 15.00)">Agregar al carrito</button>
+    </div>
+</div>
+</section>
+
+<footer>
+<p>© 2024 Catálogo Urbano</p>
+</footer>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+<h3>Carrito de Compras</h3>
+<ul id="lista-carrito"></ul>
+<p id="total-display">Total a pagar: $<span id="total">0.00</span></p>
+<input type="email" id="email" placeholder="Ingresa tu correo electrónico" required>
+<button id="proceder" onclick="procederCompra()">Proceder con la compra</button>
+<div id="qr-container">
+    <p>Escanea para seguimiento</p>
+    <div id="qrcode"></div>
+</div>
+<button onclick="cerrarModal()">Cerrar</button>
+</div>
+</div>
+
+<script>
+let carrito = [];
+let total = 0;
+
+function agregarProducto(nombre, precio) {
+    carrito.push({ nombre, precio, id: Date.now() });
+    total += precio;
+    document.getElementById("count").innerText = carrito.length;
+    actualizarModal();
+}
+
+function mostrarCarrito() {
+    actualizarModal();
+    document.getElementById("modal").style.display = "flex";
+}
+
+function actualizarModal() {
+    const lista = document.getElementById("lista-carrito");
+    lista.innerHTML = "";
+    carrito.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${item.nombre} $${item.precio.toFixed(2)} <button class="remove-btn" onclick="removerProducto(${index})">X</button>`;
+        lista.appendChild(li);
+    });
+    document.getElementById("total").innerText = total.toFixed(2);
+}
+
+function removerProducto(index) {
+    total -= carrito[index].precio;
+    carrito.splice(index, 1);
+    document.getElementById("count").innerText = carrito.length;
+    actualizarModal();
+}
+
+function procederCompra() {
+    const email = document.getElementById("email").value;
+    if (!email) {
+        alert("Por favor, ingresa tu correo electrónico.");
+        return;
+    }
+    alert(`Total a pagar: $${total.toFixed(2)}. Le mandaremos la factura electrónica a través de correo, gracias por su compra.`);
+    
+    // Generar código QR aleatorio
+    const codigoSeguimiento = 'PED-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    const qrTexto = `${codigoSeguimiento} - Mire por donde va su pedido`;
+    const qrContainer = document.getElementById("qrcode");
+    qrContainer.innerHTML = ""; // Limpiar QR anterior
+    new QRCode(qrContainer, {
+        text: qrTexto,
+        width: 128,
+        height: 128,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+    document.getElementById("qr-container").style.display = "block";
+    
+    // Resetear carrito
+    carrito = [];
+    total = 0;
+    document.getElementById("count").innerText = "0";
+    document.getElementById("email").value = "";
+}
+
+function cerrarModal() {
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("qr-container").style.display = "none";
+}
+</script>
+
+</body>
+</html>
